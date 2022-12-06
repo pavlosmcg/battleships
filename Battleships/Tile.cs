@@ -14,11 +14,14 @@ public class Tile
     
     public bool HasBeenHit { get; private set; }
 
-    public void Attack((int x, int y) guessCoordinates)
+    public AttackResult Attack((int x, int y) guessCoordinates)
     {
         if (guessCoordinates.x == X && guessCoordinates.y == Y)
         {
             HasBeenHit = true;
+            return AttackResult.Hit;
         }
+
+        return AttackResult.Miss;
     }
 }

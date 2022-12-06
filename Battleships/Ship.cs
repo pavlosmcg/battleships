@@ -11,11 +11,17 @@ public class Ship
 
     public bool IsSunk => _tiles.All(t => t.HasBeenHit);
 
-    public void Attack((int, int) guessCoordinates)
+    public AttackResult Attack((int, int) guessCoordinates)
     {
+        var result = AttackResult.Miss;
         foreach (var tile in _tiles)
         {
-            tile.Attack(guessCoordinates);
+            if (tile.Attack(guessCoordinates) == AttackResult.Hit)
+            {
+                result = AttackResult.Hit;
+            }
         }
+
+        return result;
     }
 }

@@ -1,3 +1,5 @@
+using static Battleships.AttackResult;
+
 namespace Battleships.Tests;
 
 public class ShipTests
@@ -17,6 +19,34 @@ public class ShipTests
     }
     
     [Test]
+    public void Attack_ReturnsHit_WhenGuessHitsATile()
+    {
+        // arrange
+        var tiles = new[] { new Tile((1, 1)) };
+        var unit = new Ship(tiles);
+
+        // act
+        var result = unit.Attack((1, 1));
+
+        // assert
+        Assert.That(result, Is.EqualTo(Hit));
+    }
+    
+    [Test]
+    public void Attack_ReturnsMiss_WhenGuessMissesAllTiles()
+    {
+        // arrange
+        var tiles = new[] { new Tile((1, 1)) };
+        var unit = new Ship(tiles);
+
+        // act
+        var result = unit.Attack((5, 5));
+
+        // assert
+        Assert.That(result, Is.EqualTo(Miss));
+    }
+    
+    [Test]
     public void IsSunk_ReturnsTrue_WhenAllTilesHaveBeenHit()
     {
         // arrange
@@ -25,9 +55,8 @@ public class ShipTests
 
         // act
         unit.Attack((1, 1));
-        var result = unit.IsSunk;
 
         // assert
-        Assert.That(result, Is.True);
+        Assert.That(unit.IsSunk, Is.True);
     }
 }
