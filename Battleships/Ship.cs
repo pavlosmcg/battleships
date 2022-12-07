@@ -2,7 +2,7 @@
 
 public class Ship
 {
-    private Tile[] Tiles { get; }
+    public Tile[] Tiles { get; }
 
     public Ship(Tile[] tiles)
     {
