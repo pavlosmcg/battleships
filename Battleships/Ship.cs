@@ -1,4 +1,6 @@
-﻿namespace Battleships;
+﻿using static Battleships.AttackResult;
+
+namespace Battleships;
 
 public class Ship
 {
@@ -13,16 +15,7 @@ public class Ship
 
     public AttackResult Attack((int, int) guessCoordinates)
     {
-        var result = AttackResult.Miss;
-        foreach (var tile in Tiles)
-        {
-            if (tile.Attack(guessCoordinates) == AttackResult.Hit)
-            {
-                result = AttackResult.Hit;
-            }
-        }
-
-        return result;
+        return Tiles.Any(s => s.Attack(guessCoordinates) == Hit) ? Hit : Miss;
     }
 
     public bool IsWithinBoardBounds(int boardSizeX, int boardSizeY)

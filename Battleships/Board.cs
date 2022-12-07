@@ -1,3 +1,5 @@
+using static Battleships.AttackResult;
+
 namespace Battleships;
 
 public class Board
@@ -30,11 +32,8 @@ public class Board
         return newShipToAdd.Tiles.Any(t => existingTiles.Any(ot => ot.Position == t.Position));
     }
 
-    public void Attack((int, int) guessCoordinates)
+    public AttackResult Attack((int, int) guessCoordinates)
     {
-        foreach (var ship in _ships)
-        {
-            ship.Attack(guessCoordinates);
-        }
+        return _ships.Any(s => s.Attack(guessCoordinates) == Hit) ? Hit : Miss;
     }
 }
