@@ -15,13 +15,19 @@ public class Board
 
     public bool TryAddShip(Ship ship)
     {
-        if (!ship.IsWithinBoardBounds(_boardSizeX, _boardSizeY))
-        {
-            return false;
-        }
+        var isValidPlacement = ship.IsWithinBoardBounds(_boardSizeX, _boardSizeY)
+                      && !ShipOverlapsExistingShips(ship);
         
-        _ships.Add(ship);
-        return true;
+        if (isValidPlacement)
+            _ships.Add(ship);
+        
+        return isValidPlacement;
+    }
+    
+    private bool ShipOverlapsExistingShips(Ship newShipToAdd)
+    {
+        var existingTiles = _ships.SelectMany(s => s.Tiles);
+        return newShipToAdd.Tiles.Any(t => existingTiles.Any(ot => ot.Position == t.Position));
     }
 
     public void Attack((int, int) guessCoordinates)

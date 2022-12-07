@@ -1,4 +1,5 @@
 using static Battleships.AttackResult;
+using static Battleships.Orientation;
 
 namespace Battleships.Tests;
 
@@ -75,15 +76,23 @@ public class ShipTests
     }
 
     [Test]
-    [TestCase(1,1, true)]
-    [TestCase(10,10, true)]
-    [TestCase(0,0, false)]
-    [TestCase(1,-99, false)]
-    public void IsWithinBoardBounds_ReturnsExpectedResult(int x, int y, bool expected)
+    [TestCase(1,1, 1, true)]
+    [TestCase(1,1, 10, true)]
+    [TestCase(1,2, 10, false)]
+    [TestCase(1,1, 11, false)]
+    [TestCase(5,8, 5, false)]
+    [TestCase(10,10, 1, true)]
+    [TestCase(0,0, 1, false)]
+    [TestCase(0,3, 5, false)]
+    [TestCase(1,-99, 5, false)]
+    public void IsWithinBoardBounds_ReturnsExpectedResult(int startX, int startY, int length, bool expected)
     {
         // arrange
-        var tiles = new[] { new Tile((x, y)) };
-        var unit = new Ship(tiles);
+        var unit = new ShipBuilder()
+            .WithStartPosition((startX, startY))
+            .WithOrientation(Vertical)
+            .WithLength(length)
+            .Build();
 
         // act
         var result = unit.IsWithinBoardBounds(10, 10);

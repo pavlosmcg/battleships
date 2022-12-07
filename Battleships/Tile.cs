@@ -14,7 +14,7 @@ public class Tile
 
     public AttackResult Attack((int x, int y) guessCoordinates)
     {
-        if (guessCoordinates.x == Position.x && guessCoordinates.y == Position.y)
+        if (guessCoordinates == Position)
         {
             HasBeenHit = true;
             return AttackResult.Hit;

@@ -1,3 +1,5 @@
+using static Battleships.Orientation;
+
 namespace Battleships.Tests;
 
 public class BoardTests
@@ -47,14 +49,14 @@ public class BoardTests
     }
     
     [Test]
-    [TestCase(1,1)]
-    [TestCase(5,5)]
-    [TestCase(10,10)]
-    public void TryAddShip_ReturnsTrue_WhenShipIsOnBoard(int tileX, int tileY)
+    public void TryAddShip_ReturnsTrue_WhenShipIsOnBoard()
     {
         // arrange
+        var ship = new ShipBuilder()
+            .WithStartPosition((2, 2))
+            .WithLength(6)
+            .Build();
         var unit = new Board();
-        var ship = new Ship(new[] { new Tile((tileX, tileY)) });
 
         // act
         var result = unit.TryAddShip(ship);
@@ -64,19 +66,51 @@ public class BoardTests
     }
     
     [Test]
-    [TestCase(0,0)]
-    [TestCase(0,1)]
-    [TestCase(5,11)]
-    public void TryAddShip_ReturnsFalse_WhenShipIsOutOfBounds(int tileX, int tileY)
+    public void TryAddShip_ReturnsFalse_WhenShipIsOutOfBounds()
     {
         // arrange
+        var ship = new ShipBuilder()
+            .WithStartPosition((8, 8))
+            .WithLength(6)
+            .Build();
         var unit = new Board();
-        var ship = new Ship(new[] { new Tile((tileX, tileY)) });
 
         // act
         var result = unit.TryAddShip(ship);
 
         // assert
         Assert.That(result, Is.False);
+    }
+    
+    [Test]
+    public void TryAddShip_ReturnsFalse_WhenShipOverLapsAnExistingShip()
+    {
+        // arrange
+        var firstShip = new ShipBuilder() // first to place, so OK
+            .WithStartPosition((1, 1))
+            .WithOrientation(Horizontal)
+            .WithLength(5)
+            .Build();
+        var secondShip = new ShipBuilder() // overlaps with first ship and third ship
+            .WithStartPosition((3, 1))
+            .WithOrientation(Vertical)
+            .WithLength(5)
+            .Build();
+        var thirdShip = new ShipBuilder() // does not overlap with first ship
+            .WithStartPosition((1, 2))
+            .WithOrientation(Horizontal)
+            .WithLength(5)
+            .Build();
+        var unit = new Board();
+
+        // act
+        var firstShipPlaced = unit.TryAddShip(firstShip);
+        var secondShipPlaced = unit.TryAddShip(secondShip);
+        var thirdShipPlaced = unit.TryAddShip(thirdShip);
+
+        // assert
+        Assert.That(firstShipPlaced, Is.True);
+        Assert.That(secondShipPlaced, Is.False);
+        Assert.That(thirdShipPlaced, Is.True);
     }
 }
