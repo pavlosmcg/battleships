@@ -2,28 +2,46 @@ namespace Battleships;
 
 public class ShipBuilder
 {
-    private List<Tile> _tiles = new() { new Tile((1, 1)) };
     private (int x, int y) _startPosition = (1, 1);
+    private int _length = 1;
+    private Orientation _orientation = Orientation.Horizontal;
 
     public ShipBuilder WithStartPosition((int x, int y) start)
     {
         _startPosition = start;
-        _tiles = new() { new Tile(start) };
         return this;
     }
     
     public ShipBuilder WithLength(int lengthOfTiles)
     {
-        _tiles = new List<Tile>();
-        for (int i = 0; i < lengthOfTiles; i++)
-        {
-            _tiles.Add(new Tile((_startPosition.x + i, _startPosition.y)));
-        }
+        if (lengthOfTiles <= 0)
+            throw new ArgumentOutOfRangeException(nameof(lengthOfTiles), "Ship length must be a positive number");
+        
+        _length = lengthOfTiles;
         return this;
     }
 
+    public ShipBuilder WithOrientation(Orientation orientation)
+    {
+        _orientation = orientation;
+        return this;
+    }
+    
     public Ship Build()
     {
-        return new Ship(_tiles.ToArray());
+        var tiles = new List<Tile>();
+        for (int i = 0; i < _length; i++)
+        {
+            if (_orientation == Orientation.Horizontal)
+            {
+                tiles.Add(new Tile((_startPosition.x + i, _startPosition.y)));
+            }
+            else
+            {
+                tiles.Add(new Tile((_startPosition.x, _startPosition.y + i)));
+            }
+        }
+        
+        return new Ship(tiles.ToArray());
     }
 }

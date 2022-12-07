@@ -72,4 +72,38 @@ public class ShipBuilderTests
         Assert.That(result.Tiles.Last().Position.x, Is.EqualTo(startX + length - 1));
         Assert.That(result.Tiles.Last().Position.y, Is.EqualTo(startY));
     }
+    
+    [Test]
+    [TestCase(1,1,5)]
+    [TestCase(9,9,2)]
+    [TestCase(1,10,1)]
+    public void Build_ReturnsShipWithExpectedProperties_WhenOrientationIsVertical(int startX, int startY, int length)
+    {
+        // arrange
+        var unit = new ShipBuilder();
+        
+        // act
+        unit.WithStartPosition((startX, startY));
+        unit.WithLength(length);
+        unit.WithOrientation(Orientation.Vertical);
+        var result = unit.Build();
+        
+        // assert
+        Assert.That(result.Tiles.Length, Is.EqualTo(length));
+        Assert.That(result.Tiles.Last().Position.x, Is.EqualTo(startX));
+        Assert.That(result.Tiles.Last().Position.y, Is.EqualTo(startY + length - 1));
+    }
+
+    [Test]
+    public void WithLength_ThrowsArgumentOutOfRangeException_WhenLengthOfShipIsZeroOrSmaller()
+    {
+        // arrange
+        var unit = new ShipBuilder();
+        
+        // act
+        void Action() => unit.WithLength(-4);
+        
+        // assert
+        Assert.Throws<ArgumentOutOfRangeException>(Action);
+    }
 }

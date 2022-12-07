@@ -2,8 +2,8 @@ namespace Battleships;
 
 public class Board
 {
-    private int _boardSizeX = 10;
-    private int _boardSizeY = 10;
+    private readonly int _boardSizeX = 10;
+    private readonly int _boardSizeY = 10;
     private readonly List<Ship> _ships;
 
     public Board()
