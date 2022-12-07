@@ -59,4 +59,18 @@ public class ShipTests
         // assert
         Assert.That(unit.IsSunk, Is.True);
     }
+    
+    [Test]
+    public void IsSunk_ReturnsFalse_WhenOnlySomeTilesHaveBeenHit()
+    {
+        // arrange
+        var tiles = new[] { new Tile((1, 1)), new Tile((1, 2)) };
+        var unit = new Ship(tiles);
+
+        // act
+        unit.Attack((1, 1));
+
+        // assert
+        Assert.That(unit.IsSunk, Is.False);
+    }
 }

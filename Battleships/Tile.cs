@@ -2,21 +2,19 @@ namespace Battleships;
 
 public class Tile
 {
-    public Tile((int x, int y) coordinates)
+    public Tile((int x, int y) position)
     {
-        X = coordinates.x;
-        Y = coordinates.y;
+        Position = position;
         HasBeenHit = false;
     }
     
-    public int X { get; }
-    public int Y { get; }
-    
+    public (int x, int y) Position { get; }
+
     public bool HasBeenHit { get; private set; }
 
     public AttackResult Attack((int x, int y) guessCoordinates)
     {
-        if (guessCoordinates.x == X && guessCoordinates.y == Y)
+        if (guessCoordinates.x == Position.x && guessCoordinates.y == Position.y)
         {
             HasBeenHit = true;
             return AttackResult.Hit;

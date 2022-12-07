@@ -2,19 +2,19 @@
 
 public class Ship
 {
-    private readonly Tile[] _tiles;
+    public Tile[] Tiles { get; }
 
     public Ship(Tile[] tiles)
     {
-        _tiles = tiles;
+        Tiles = tiles;
     }
 
-    public bool IsSunk => _tiles.All(t => t.HasBeenHit);
+    public bool IsSunk => Tiles.All(t => t.HasBeenHit);
 
     public AttackResult Attack((int, int) guessCoordinates)
     {
         var result = AttackResult.Miss;
-        foreach (var tile in _tiles)
+        foreach (var tile in Tiles)
         {
             if (tile.Attack(guessCoordinates) == AttackResult.Hit)
             {
