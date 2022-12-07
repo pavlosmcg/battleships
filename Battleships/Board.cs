@@ -4,20 +4,31 @@ public class Board
 {
     private int _boardSizeX = 10;
     private int _boardSizeY = 10;
-    public bool PlayerHasLost => false;
+    private readonly List<Ship> _ships;
+
+    public Board()
+    {
+        _ships = new List<Ship>();
+    }
+
+    public bool PlayerHasLost => _ships.Any() && _ships.All(s => s.IsSunk);
 
     public bool TryAddShip(Ship ship)
     {
-        if (ship.Tiles.Any(t => !IsOnBoard(t.Position)))
+        if (!ship.IsWithinBoardBounds(_boardSizeX, _boardSizeY))
         {
             return false;
         }
+        
+        _ships.Add(ship);
         return true;
     }
 
-    private bool IsOnBoard((int x, int y) coordinates)
+    public void Attack((int, int) guessCoordinates)
     {
-        return coordinates.x > 0 && coordinates.x <= _boardSizeX &&
-               coordinates.y > 0 && coordinates.y <= _boardSizeY;
+        foreach (var ship in _ships)
+        {
+            ship.Attack(guessCoordinates);
+        }
     }
 }

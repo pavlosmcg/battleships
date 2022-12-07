@@ -2,7 +2,7 @@
 
 public class Ship
 {
-    public Tile[] Tiles { get; }
+    private Tile[] Tiles { get; }
 
     public Ship(Tile[] tiles)
     {
@@ -23,5 +23,16 @@ public class Ship
         }
 
         return result;
+    }
+
+    public bool IsWithinBoardBounds(int boardSizeX, int boardSizeY)
+    {
+        return Tiles.All(t => IsOnBoard(t.Position, boardSizeX, boardSizeY));
+    }
+    
+    private bool IsOnBoard((int x, int y) coordinates, int boardSizeX, int boardSizeY)
+    {
+        return coordinates.x > 0 && coordinates.x <= boardSizeX &&
+               coordinates.y > 0 && coordinates.y <= boardSizeY;
     }
 }

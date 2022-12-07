@@ -73,4 +73,22 @@ public class ShipTests
         // assert
         Assert.That(unit.IsSunk, Is.False);
     }
+
+    [Test]
+    [TestCase(1,1, true)]
+    [TestCase(10,10, true)]
+    [TestCase(0,0, false)]
+    [TestCase(1,-99, false)]
+    public void IsWithinBoardBounds_ReturnsExpectedResult(int x, int y, bool expected)
+    {
+        // arrange
+        var tiles = new[] { new Tile((x, y)) };
+        var unit = new Ship(tiles);
+
+        // act
+        var result = unit.IsWithinBoardBounds(10, 10);
+
+        // assert
+        Assert.That(result, Is.EqualTo(expected));
+    }
 }

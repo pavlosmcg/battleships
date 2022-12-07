@@ -16,6 +16,37 @@ public class BoardTests
     }
     
     [Test]
+    public void PlayerHasLost_ReturnsFalse_WhenThereAreShipsRemaining()
+    {
+        // arrange
+        var unit = new Board();
+        var ship = new Ship(new[] { new Tile((1, 1)) });
+        unit.TryAddShip(ship);
+        
+        // act
+        var result = unit.PlayerHasLost;
+
+        // assert
+        Assert.That(result, Is.False);
+    }
+    
+    [Test]
+    public void PlayerHasLost_ReturnsTrue_WhenAllShipsHaveBeenSunk()
+    {
+        // arrange
+        var unit = new Board();
+        var ship = new Ship(new[] { new Tile((1, 1)) });
+        unit.TryAddShip(ship);
+        
+        // act
+        unit.Attack((1, 1));
+        var result = unit.PlayerHasLost;
+
+        // assert
+        Assert.That(result, Is.True);
+    }
+    
+    [Test]
     [TestCase(1,1)]
     [TestCase(5,5)]
     [TestCase(10,10)]
