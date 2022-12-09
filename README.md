@@ -24,7 +24,7 @@ Then add the ship to the board with:
 
 `board.TryAddShip(ship);`
 
-Continue adding ships this way, and `TryAddShip` will return a boolean representing whether the ship was added (if it's position was valid)
+Continue adding ships this way, and `TryAddShip` will return a boolean representing whether the ship was added (if its position was valid)
 
 To take an attack, supply a tuple of coordinates (x,y) to the attack method like so:
 `board.Attack((2, 5));`
